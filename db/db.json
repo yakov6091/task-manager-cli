@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "yakov",
+      "password": "hashed_password_here"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "s",
+      "description": "ss",
+      "isComplete": false,
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "title": "2",
+      "description": "1",
+      "isComplete": true,
+      "userId": 1
+    }
+  ]
+}
