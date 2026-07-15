@@ -4,6 +4,16 @@
       "id": 1,
       "username": "yakov",
       "password": "hashed_password_here"
+    },
+    {
+      "id": 2,
+      "username": "jake",
+      "hashedPassword": "$2b$10$oX/3VRLQXZmNGoCpp8WSAOuNJxwtxFWFjiJO4Km2fqGvdAlicxxJq"
+    },
+    {
+      "id": 3,
+      "username": "jake1",
+      "hashedPassword": "$2b$10$Q2LY1WI1p8Frd61eOVk7dOVNeUip/vZula4G4S/duy2uJIKAqhTiq"
     }
   ],
   "tasks": [
