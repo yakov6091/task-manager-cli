@@ -3,10 +3,36 @@ import fs from "fs";
 import path from "path";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { AuthenticationRequest } from "../middleware/auth.middleware";
 
 const dbPath = path.join(__dirname, "../../db/db.json");
 // A temporary secret key (In a real app, this goes in your .env file!)
 const JWT_SECRET = "super_secret_temporary_key_12345";
+
+export const getMe = async (req: AuthenticationRequest, res: Response): Promise<void> => {
+    try {
+        const userId = req.user?.userId;
+
+        // Read db.json
+        const fileContent = fs.readFileSync(dbPath, 'utf-8');
+        const db = JSON.parse(fileContent);
+
+        // Find the user inside db.users
+        const user = db.users.find((user: any) => user.id === userId);
+
+        if (!user) {
+            res.status(404).json({ message: 'User not found.' });
+            return;
+        }
+
+        // Remove sensitive fields before returning the user
+        const { password, hashedPassword, ...userProfile } = user;
+        res.json(userProfile);
+
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch user profile.' });
+    }
+};
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
     // res.status(200).json({ message: "Hello from backend registration!" });

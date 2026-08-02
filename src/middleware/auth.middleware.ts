@@ -19,7 +19,7 @@ export const authenticateToken = (
     const authHeader = req.headers["authorization"];
     // console.log('Header', authHeader)
     const token = authHeader && authHeader.split(' ')[1];
-    console.log(token)
+    // console.log(token)
 
     // If no token provided, block access
     if (!token) {

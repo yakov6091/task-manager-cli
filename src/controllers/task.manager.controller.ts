@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import fs from "fs/promises";
 import path from "path";
-import { title } from "process";
+import { AuthenticationRequest } from "../middleware/auth.middleware";
 
 interface Tasks {
     id: number,
@@ -12,19 +12,24 @@ interface Tasks {
 type task = {
     id: number,
     description: string,
-    isComplete: boolean
+    isComplete: boolean,
+    userId: number
 }
 
-export const getTasks = async (req: Request, res: Response) => {
+// Get tasks per user
+export const getTasks = async (req: AuthenticationRequest, res: Response) => {
     try {
         const filePath = path.join(__dirname, '../../db/db.json');
 
+        const userId = req.user?.userId;
         const rawTasks = await fs.readFile(filePath, 'utf8');
-        console.log(rawTasks)
+        // console.log(rawTasks)
 
         const data = JSON.parse(rawTasks);
-        console.log('Tasks:', data)
-        return res.status(200).json(data.tasks);
+        // console.log('Tasks:', data)
+
+        const userTasks = data.tasks.filter((task: task) => task.userId === userId);
+        return res.status(200).json(userTasks);
 
     } catch (error) {
         console.error('Failed to load tasks:', error);
@@ -32,10 +37,12 @@ export const getTasks = async (req: Request, res: Response) => {
     }
 };
 
-export const addTask = async (req: Request, res: Response) => {
+// Add task
+export const addTask = async (req: AuthenticationRequest, res: Response) => {
     try {
         const filePath = path.join(__dirname, '../../db/db.json');
 
+        const userId = req.user?.userId;
         const { title, description, isComplete } = req.body;
 
         if (!description || isComplete === undefined) {
@@ -49,7 +56,8 @@ export const addTask = async (req: Request, res: Response) => {
             id: data.tasks.length > 0 ? data.tasks[data.tasks.length - 1].id + 1 : 1,
             title: title,
             description: description,
-            isComplete: isComplete
+            isComplete: isComplete,
+            userId
         };
 
         data.tasks.push(newTask);
@@ -64,20 +72,23 @@ export const addTask = async (req: Request, res: Response) => {
     }
 };
 
-export const patchTask = async (req: Request, res: Response) => {
+// Patch task by user 
+export const patchTask = async (req: AuthenticationRequest, res: Response) => {
     try {
         const { title, description, isComplete } = req.body;
         const { id } = req.params;
+        const userId = req.user?.userId;
         const filePath = path.join(__dirname, '../../db/db.json');
 
         if (!id) {
             return res.status(400).json({ message: 'Task ID is required' });
         }
 
+
         const rawTasks = await fs.readFile(filePath, 'utf8');
         const data = JSON.parse(rawTasks);
 
-        const taskIndex = data.tasks.findIndex((task: any) => task.id === +id);
+        const taskIndex = data.tasks.findIndex((task: task) => task.id === +id);
 
         if (taskIndex === -1) {
             return res.status(404).json({ message: 'Task not found' });
@@ -87,8 +98,13 @@ export const patchTask = async (req: Request, res: Response) => {
             ...data.tasks[taskIndex],
             ...(title !== undefined && { title }),
             ...(description !== undefined && { description }),
-            ...(isComplete !== undefined && { isComplete })
+            ...(isComplete !== undefined && { isComplete }),
         };
+
+        if (updatedTask.userId !== userId) {
+            res.status(403).json({ message: 'Unauthorized to update this task.' });
+            return;
+        }
 
         data.tasks[taskIndex] = updatedTask;
 
@@ -102,9 +118,11 @@ export const patchTask = async (req: Request, res: Response) => {
     }
 };
 
-export const deleteTask = async (req: Request, res: Response) => {
+// Delete user task
+export const deleteTask = async (req: AuthenticationRequest, res: Response) => {
     try {
         const filePath = path.join(__dirname, '../../db/db.json');
+        const userId = req.user?.userId;
         const { id } = req.params;
 
         if (!id) {
@@ -114,12 +132,18 @@ export const deleteTask = async (req: Request, res: Response) => {
         const rawTasks = await fs.readFile(filePath, 'utf8');
         const data = JSON.parse(rawTasks);
 
-        const taskExists = data.tasks.some((task: any) => task.id === +id);
+        const taskExists = data.tasks.some((task: task) => task.id === +id);
         if (!taskExists) {
-            return res.status(404).json({ message: 'Task not found' });
+            res.status(404).json({ message: 'Task not found' });
+            return;
         }
 
-        const filteredTasks = data.tasks.filter((task: any) => task.id !== +id);
+        if (taskExists.userId !== userId) {
+            res.status(403).json({ message: 'Unauthorized to delete this task.' });
+            return;
+        }
+
+        const filteredTasks = data.tasks.filter((task: task) => task.id !== +id);
 
         const updatedData = {
             ...data,
