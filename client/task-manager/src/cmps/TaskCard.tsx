@@ -1,4 +1,4 @@
-import { type Task } from "../EmailManager"
+import { type Task } from "../TaskManager"
 
 interface TaskCardProps {
     task: Task,

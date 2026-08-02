@@ -1,4 +1,4 @@
-import { type FilterStatus } from "../EmailManager";
+import { type FilterStatus } from "../TaskManager";
 
 interface TaskFilterProps {
     currentFilter: FilterStatus,

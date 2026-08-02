@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Task } from "../EmailManager";
+import type { Task } from "../TaskManager";
 
 interface TaskFormData {
     title: string,
