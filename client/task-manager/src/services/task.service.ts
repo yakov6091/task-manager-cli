@@ -2,11 +2,23 @@ import { type Task } from "../TaskManager";
 
 const URL = 'http://localhost:4000/tasks';
 
+// Helper function to dynamically add headers with the JWT token
+const getHeaders = () => {
+    const token = localStorage.getItem('token');
+    return {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+    };
+};
+
 // object way
 export const taskService = {
     // GET tasks
     query: async (): Promise<Task[]> => {
-        const response = await fetch(URL);
+        const response = await fetch(URL, {
+            headers: getHeaders(),
+        });
+
         if (!response.ok) throw new Error('Failed to fetch tasks');
         return response.json();
     },
@@ -14,9 +26,9 @@ export const taskService = {
     create: async (taskData: Omit<Task, 'id' | 'createdAt'>): Promise<Task> => {
         const response = await fetch(`${URL}/add`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getHeaders(),
             body: JSON.stringify(taskData),
-        })
+        });
         if (!response.ok) throw new Error('Failed to create task');
         return response.json();
     },
@@ -24,7 +36,7 @@ export const taskService = {
     patch: async (taskId: number, fieldsToUpdate: Partial<Task>): Promise<Task> => {
         const response = await fetch(`${URL}/patch/${taskId}`, {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getHeaders(),
             body: JSON.stringify(fieldsToUpdate)// pass the partial changes here!
         });
         if (!response.ok) throw new Error('Failed to update task');
@@ -34,8 +46,9 @@ export const taskService = {
     // DELETE task
     remove: async (taskId: number): Promise<void> => {
         const response = await fetch(`${URL}/delete/${taskId}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getHeaders(),
         });
         if (!response.ok) throw new Error('Failed to delete task');
     }
-}
+};
