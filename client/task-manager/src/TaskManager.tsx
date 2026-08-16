@@ -44,6 +44,9 @@ export function EmailManager() {
     const [filter, setFilter] = useState<FilterStatus>('all');
     const [searchQuery, setSearchQuery] = useState('');
 
+    // Testing 
+    const [currentUser, setCurrentUser] = useState<{ username: string } | null>({ username: 'DemoUser' });
+
     useEffect(() => {
         async function loadTasks() {
             try {
@@ -83,7 +86,11 @@ export function EmailManager() {
 
     return (
         <>
-            <Header />
+            <Header
+                currentUser={currentUser}
+                onLoginSuccess={(user) => setCurrentUser(user)}
+                onLogout={() => setCurrentUser(null)}
+            />
             <main className="w-full p-8 min-h-screen bg-slate-50">
                 {editTask ? (
                     <TaskForm
