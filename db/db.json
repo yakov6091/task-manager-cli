@@ -19,6 +19,11 @@
       "id": 5,
       "username": "ss1",
       "hashedPassword": "$2b$10$sI7Yp7DPDEu/sKEzk6Vbne/TkzgnhSIkooXeR/whLNe4NyKfyP7IC"
+    },
+    {
+      "id": 6,
+      "username": "yakov1",
+      "hashedPassword": "$2b$10$f4DvPRp0p3JjuSp3JR1RMehUdjmmSXu.fw/YkJMsV5K1wgMFmPwOC"
     }
   ],
   "tasks": [

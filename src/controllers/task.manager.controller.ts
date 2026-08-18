@@ -132,13 +132,16 @@ export const deleteTask = async (req: AuthenticationRequest, res: Response) => {
         const rawTasks = await fs.readFile(filePath, 'utf8');
         const data = JSON.parse(rawTasks);
 
-        const taskExists = data.tasks.some((task: task) => task.id === +id);
-        if (!taskExists) {
+        // 1. Use .find() to get the actual task object instead of .some()
+        const taskToDelete = data.tasks.find((task: task) => task.id === +id);
+
+        if (!taskToDelete) {
             res.status(404).json({ message: 'Task not found' });
             return;
         }
 
-        if (taskExists.userId !== userId) {
+        // 2. Compare user IDs safely using Number() casting
+        if (Number(taskToDelete.userId) !== Number(userId)) {
             res.status(403).json({ message: 'Unauthorized to delete this task.' });
             return;
         }

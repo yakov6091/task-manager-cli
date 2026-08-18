@@ -49,6 +49,10 @@ export const taskService = {
             method: 'DELETE',
             headers: getHeaders(),
         });
-        if (!response.ok) throw new Error('Failed to delete task');
+        if (!response.ok) {
+            const errData = await response.json().catch(() => null);
+            throw new Error(errData?.message || `Server responded with status ${response.status}`);
+            throw new Error('Failed to delete task');
+        }
     }
 };
