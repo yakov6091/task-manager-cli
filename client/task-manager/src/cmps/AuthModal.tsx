@@ -4,10 +4,10 @@ import { authService } from "../services/auth.service";
 interface AuthModalProps {
     mode: 'login' | 'signup',
     onClose: () => void,
-    onLoginSuccess: (user: any) => void
+    onSuccess: (user: any) => void
 }
 
-export function AuthModal({ mode, onClose, onLoginSuccess }: AuthModalProps) {
+export function AuthModal({ mode, onClose, onSuccess }: AuthModalProps) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -22,19 +22,18 @@ export function AuthModal({ mode, onClose, onLoginSuccess }: AuthModalProps) {
                 const data = await authService.login({ username, password });
 
                 // Notify parent component that login succeeded
-                onLoginSuccess(data.user || { username });
+                onSuccess(data.user || { username });
 
             } else if (mode === 'signup') {
                 // Register user and then log them in automatically
                 await authService.register({ username, password });
                 const data = await authService.login({ username, password });
-                onLoginSuccess(data.user || { username });
+                onSuccess(data.user || { username });
             }
 
         } catch (err: any) {
             setError(err.message || 'An error occurred');
         }
-
     };
 
     return (
