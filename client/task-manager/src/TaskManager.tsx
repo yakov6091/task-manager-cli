@@ -3,6 +3,7 @@ import { Header } from './cmps/header';
 import { TaskCard } from './cmps/TaskCard';
 import { TaskForm } from './cmps/TaskForm';
 import { TaskFilters } from './cmps/TaskFilters';
+import { AuthModal } from './cmps/AuthModal';
 import { taskService } from './services/task.service';
 
 export interface Task {
@@ -91,6 +92,7 @@ export function EmailManager() {
                 onLoginSuccess={(user) => setCurrentUser(user)}
                 onLogout={() => setCurrentUser(null)}
             />
+
             <main className="w-full p-8 min-h-screen bg-slate-50">
                 {editTask ? (
                     <TaskForm

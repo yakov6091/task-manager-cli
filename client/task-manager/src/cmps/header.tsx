@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { authService } from "../services/auth.service";
+import { AuthModal } from "./AuthModal";
 
 interface UserCredentials {
     id?: string,
@@ -15,7 +16,7 @@ export function Header({ currentUser, onLoginSuccess, onLogout }: HeaderProps) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
-    const [authMode, setAuthMode] = useState<'login' | 'signup' | null>(null);
+    const [authMode, setAuthMode] = useState<'login' | 'signup' | null>('login');
 
     const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -50,6 +51,11 @@ export function Header({ currentUser, onLoginSuccess, onLogout }: HeaderProps) {
         <header className="flex justify-between items-center text-white bg-blue-700 px-8 py-6 shadow-lg">
             <h2 className="text-2xl font-bold">Task-Manager</h2>
 
+            <AuthModal
+                mode={authMode ?? 'login'}
+                onClose={() => setAuthMode(null)}
+                onLoginSuccess={(user: any) => onLoginSuccess(user)}
+            />
             {/* If user is logged in, display profile info and logout */}
             {currentUser ? (
                 <div className="flex items-center gap-4">
