@@ -46,7 +46,7 @@ export function EmailManager() {
     const [searchQuery, setSearchQuery] = useState('');
 
     // Testing 
-    const [currentUser, setCurrentUser] = useState<{ username: string } | null>({ username: 'DemoUser' });
+    const [currentUser, setCurrentUser] = useState<{ username: string } | null>(null);
 
     useEffect(() => {
         async function loadTasks() {
