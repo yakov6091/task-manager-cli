@@ -5,6 +5,7 @@ import { TaskForm } from './cmps/TaskForm';
 import { TaskFilters } from './cmps/TaskFilters';
 import { AuthModal } from './cmps/AuthModal';
 import { taskService } from './services/task.service';
+import { authService } from './services/auth.service';
 
 export interface Task {
     id: number,
@@ -36,6 +37,7 @@ const getInitialTasks = (): Task[] => {
         return [];
     }
 };
+
 
 export function EmailManager() {
     // const [tasks, setTasks] = useState<Task[]>([]); // way 1
@@ -85,12 +87,20 @@ export function EmailManager() {
     //     localStorage.setItem('tasks', JSON.stringify(tasks));
     // }, [tasks]);
 
+    const handleLogout = () => {
+        // Destroy the token in localStorage
+        authService.logout();
+
+        // Update React state to hide the user UI
+        setCurrentUser(null);
+    }
+
     return (
         <>
             <Header
                 currentUser={currentUser}
                 onLoginSuccess={(user) => setCurrentUser(user)}
-                onLogout={() => setCurrentUser(null)}
+                onLogout={handleLogout}
             />
 
             <main className="w-full p-8 min-h-screen bg-slate-50">
