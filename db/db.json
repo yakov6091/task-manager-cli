@@ -24,6 +24,11 @@
       "id": 6,
       "username": "yakov1",
       "hashedPassword": "$2b$10$f4DvPRp0p3JjuSp3JR1RMehUdjmmSXu.fw/YkJMsV5K1wgMFmPwOC"
+    },
+    {
+      "id": 7,
+      "username": "daniel1",
+      "hashedPassword": "$2b$10$oAmsG.1gNU2bRmzQOtmmf.3s5dPxo09dlheqd9Eiv9LFb5lcqciLm"
     }
   ],
   "tasks": [
@@ -38,6 +43,48 @@
       "id": 2,
       "title": "hello",
       "description": "ss1",
+      "isComplete": false,
+      "userId": 5
+    },
+    {
+      "id": 3,
+      "title": "w",
+      "description": "2",
+      "isComplete": false,
+      "userId": 5
+    },
+    {
+      "id": 4,
+      "title": "2",
+      "description": "2",
+      "isComplete": false,
+      "userId": 5
+    },
+    {
+      "id": 5,
+      "title": "11",
+      "description": "ss",
+      "isComplete": false,
+      "userId": 5
+    },
+    {
+      "id": 6,
+      "title": "1",
+      "description": "s",
+      "isComplete": false,
+      "userId": 5
+    },
+    {
+      "id": 7,
+      "title": "2",
+      "description": "2",
+      "isComplete": false,
+      "userId": 4
+    },
+    {
+      "id": 8,
+      "title": "",
+      "description": "s",
       "isComplete": false,
       "userId": 5
     }

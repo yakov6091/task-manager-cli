@@ -92,7 +92,10 @@ export function Header({ currentUser, onLoginSuccess, onLogout }: HeaderProps) {
                 <AuthModal
                     mode={authMode}
                     onClose={() => setAuthMode(null)}
-                    onSuccess={(user) => onLoginSuccess(user)}
+                    onSuccess={(user) => {
+                        onLoginSuccess(user)
+                        setAuthMode(null)
+                    }}
                 />
             )}
         </header>

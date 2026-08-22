@@ -30,6 +30,7 @@ export function AuthModal({ mode, onClose, onSuccess }: AuthModalProps) {
                 const data = await authService.login({ username, password });
                 onSuccess(data.user || { username });
             }
+            onClose()
 
         } catch (err: any) {
             setError(err.message || 'An error occurred');
