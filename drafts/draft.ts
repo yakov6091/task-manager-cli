@@ -110,3 +110,26 @@
 //         res.status(500).json({ message: 'Server error' });
 //     }
 // })
+
+
+// This means: "Take everything from Task, but change createdAt to a string"
+// type SerializedTask = Omit<Task, 'createdAt'> & { createdAt: string };
+
+// const getInitialTasks = (): Task[] => {
+//     const savedTasks = localStorage.getItem('tasks');
+
+//     // If there's nothing saved, start with an empty array
+//     if (!savedTasks) return [];
+
+//     try {
+//         const parsedTasks = JSON.parse(savedTasks) as SerializedTask[];
+//         return parsedTasks.map((task): Task => ({
+//             ...task,
+//             createdAt: new Date(task.createdAt)
+//         }));
+
+//     } catch (error) {
+//         console.error('Failed to parse tasks from localStorage', error);
+//         return [];
+//     }
+// };

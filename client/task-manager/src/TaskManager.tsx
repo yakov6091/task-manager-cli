@@ -3,7 +3,6 @@ import { Header } from './cmps/header';
 import { TaskCard } from './cmps/TaskCard';
 import { TaskForm } from './cmps/TaskForm';
 import { TaskFilters } from './cmps/TaskFilters';
-import { AuthModal } from './cmps/AuthModal';
 import { taskService } from './services/task.service';
 import { authService } from './services/auth.service';
 
@@ -14,30 +13,8 @@ export interface Task {
     isComplete: boolean,
     createdAt: Date,
 }
-// This means: "Take everything from Task, but change createdAt to a string"
-type SerializedTask = Omit<Task, 'createdAt'> & { createdAt: string };
 
 export type FilterStatus = 'all' | 'active' | 'completed';
-
-const getInitialTasks = (): Task[] => {
-    const savedTasks = localStorage.getItem('tasks');
-
-    // If there's nothing saved, start with an empty array
-    if (!savedTasks) return [];
-
-    try {
-        const parsedTasks = JSON.parse(savedTasks) as SerializedTask[];
-        return parsedTasks.map((task): Task => ({
-            ...task,
-            createdAt: new Date(task.createdAt)
-        }));
-
-    } catch (error) {
-        console.error('Failed to parse tasks from localStorage', error);
-        return [];
-    }
-};
-
 
 export function EmailManager() {
     // const [tasks, setTasks] = useState<Task[]>([]); // way 1
