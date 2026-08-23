@@ -52,15 +52,21 @@ export function EmailManager() {
 
     useEffect(() => {
         async function loadTasks() {
+            // 🛑 Guard check: Stop immediately if no user is logged in!
+            if (!currentUser) {
+                setTasks([]);
+                return;
+            }
+
             try {
-                const backendTasks = await taskService.query(); // Talk to Node
+                const backendTasks = await taskService.query(); // Talk to Node (backend)
                 setTasks(backendTasks);
             } catch (error) {
                 console.error('Failed to load initial tasks:', error);
             }
         }
         loadTasks()
-    }, []); // Empty array means "Run once on load"
+    }, [currentUser]); // Empty array means "Run once on load" OR Re-run every time currentUser changes
 
     const filteredTasks = tasks.filter(task => {
         // NOTE: Using .includes() instead of RegExp() because RegExp can crash 
@@ -93,6 +99,7 @@ export function EmailManager() {
 
         // Update React state to hide the user UI
         setCurrentUser(null);
+        setTasks([]);
     }
 
     return (
