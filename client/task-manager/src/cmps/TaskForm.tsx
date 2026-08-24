@@ -40,9 +40,29 @@ export function TaskForm({ onAddTask, initialTask }: TaskFormProps) {
         }));
     };
 
+    const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!form.title.trim()) return;
+
+        onAddTask({
+            ...form,
+            title: form.title.trim(),
+            description: form.description.trim()
+        });
+
+        if (!initialTask) {
+            setForm({ title: '', description: '', isComplete: false })
+        }
+    };
+
     return (
-        <div className="max-w-md mx-auto bg-gradient-to-r from-blue-500 to-indigo-500 p-8 rounded-xl shadow-md border border-blue-200 mb-8">
-            <h3 className="text-xl font-bold mb-6 bg-linear-to-r from-sky-300 to-emerald-500 bg-clip-text text-transparent">Create New Task</h3>
+        <form
+            onSubmit={handleSubmit}
+            className="max-w-md mx-auto bg-gradient-to-r from-blue-500 to-indigo-500 p-8 rounded-xl shadow-md border border-blue-200 mb-8"
+        >
+            <h3 className="text-xl font-bold mb-6 bg-linear-to-r from-sky-300 to-emerald-500 bg-clip-text text-transparent">
+                {initialTask ? 'Edit Task' : 'Create new Task'}
+            </h3>
 
             <div className="flex flex-col gap-4">
                 <div>
@@ -54,6 +74,7 @@ export function TaskForm({ onAddTask, initialTask }: TaskFormProps) {
                         value={form.title}
                         onChange={handleChange}
                         placeholder="Buy me a coffie"
+                        required
                     />
                 </div>
             </div>
@@ -70,16 +91,11 @@ export function TaskForm({ onAddTask, initialTask }: TaskFormProps) {
             </div>
 
             <button
+                type="submit"
                 className="w-full bg-gradient-to-r from-blue-700 to-indigo-700 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-lg shadow-cyan-500/50 hover:shadow-xl cursor-pointer"
-                onClick={() => {
-                    onAddTask(form)
-                    if (!initialTask) { // Only clear if adding new (not editing)
-                        setForm({ title: '', description: '', isComplete: false })
-                    }
-                }}
             >
                 {initialTask ? 'Update Task' : '+ Add Task'}
             </button>
-        </div>
-    )
+        </form>
+    );
 }

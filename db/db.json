@@ -33,16 +33,9 @@
   ],
   "tasks": [
     {
-      "id": 7,
-      "title": "2",
-      "description": "2",
-      "isComplete": false,
-      "userId": 4
-    },
-    {
       "id": 8,
-      "title": "s",
-      "description": "ss",
+      "title": "123",
+      "description": "123",
       "isComplete": false,
       "userId": 6
     },
