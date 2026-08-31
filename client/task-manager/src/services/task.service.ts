@@ -52,7 +52,6 @@ export const taskService = {
         if (!response.ok) {
             const errData = await response.json().catch(() => null);
             throw new Error(errData?.message || `Server responded with status ${response.status}`);
-            throw new Error('Failed to delete task');
         }
     }
 };
