@@ -4,7 +4,7 @@ import db from "../sqliteDB/sqlite";
 import { AuthenticationRequest } from "../middleware/auth.middleware";
 
 export const getTasks = (req: AuthenticationRequest, res: Response) => {
-    const userId = req.user?.userId; // Extracted from JWT auth middleware
+    const userId = req.user?.id; // Extracted from JWT auth middleware
 
     // statement
     const stmt = db.prepare('SELECT * FROM tasks WHERE userId = ?');
@@ -21,7 +21,7 @@ export const getTasks = (req: AuthenticationRequest, res: Response) => {
 
 export const createTask = (req: AuthenticationRequest, res: Response) => {
     const { title, description } = req.body;
-    const userId = req.user?.userId;
+    const userId = req.user?.id;
     const id = uuidv4();
 
     if (!title || !title.trim()) {
@@ -46,7 +46,7 @@ export const createTask = (req: AuthenticationRequest, res: Response) => {
 export const updateTask = (req: AuthenticationRequest, res: Response) => {
     const { id } = req.params;
     const { title, description, isComplete } = req.body;
-    const userId = req.user?.userId;
+    const userId = req.user?.id;
 
     const stmt = db.prepare(`
         UPDATE tasks 
@@ -65,7 +65,7 @@ export const updateTask = (req: AuthenticationRequest, res: Response) => {
 
 export const deleteTask = (req: AuthenticationRequest, res: Response) => {
     const { id } = req.params;
-    const userId = req.user?.userId;
+    const userId = req.user?.id;
 
     const stmt = db.prepare('DELETE FROM tasks WHERE id = ? AND userId = ?');
     const result = stmt.run(id, userId);

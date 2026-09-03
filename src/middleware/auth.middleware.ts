@@ -1,11 +1,20 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = 'super_secret_temporary_key_12345';
+// const JWT_SECRET = 'super_secret_temporary_key_12345';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key';
+
+// export interface AuthenticationRequest extends Request {
+//     user?: {
+//         userId: number,
+//         username: string
+//     };
+// };
 
 export interface AuthenticationRequest extends Request {
     user?: {
-        userId: number,
+        id: string,
         username: string
     };
 };
@@ -29,7 +38,9 @@ export const authenticateToken = (
 
     try {
         // Verify token integrity
-        const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; username: string };
+        // const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; username: string };
+
+        const decoded = jwt.verify(token, JWT_SECRET) as { id: string; username: string };
 
         // Attach decoded user info directly to the request object
         req.user = decoded;

@@ -8,13 +8,13 @@ http:
   url: http://localhost:4000/tasks/add
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsInVzZXJuYW1lIjoic3MxIiwiaWF0IjoxNzg1MjY2ODU1LCJleHAiOjE3ODUyNzA0NTV9.PanCsEurZLE6BK1XjVsWpc952RohL-HIMOEfLKvEWHg
+      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIzMGYwNDg3LWY5YjEtNGJhNi1iMDc2LWJmZGM2YWIwM2I1YyIsInVzZXJuYW1lIjoic3MiLCJpYXQiOjE3ODg0NjE4MzYsImV4cCI6MTc4ODU0ODIzNn0.S5WBTONsAk9waov8X1drHgtZwtrrMCkspFuTFHwG3bg
   body:
     type: json
     data: |-
       {
-        "title": "hello",
-        "description": "ss1",
+        "title": "hello user",
+        "description": "lets start",
         "isComplete": false
       }
   auth: inherit
