@@ -8,16 +8,24 @@ http:
   url: http://localhost:4000/tasks/add
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIzMGYwNDg3LWY5YjEtNGJhNi1iMDc2LWJmZGM2YWIwM2I1YyIsInVzZXJuYW1lIjoic3MiLCJpYXQiOjE3ODg0NjE4MzYsImV4cCI6MTc4ODU0ODIzNn0.S5WBTONsAk9waov8X1drHgtZwtrrMCkspFuTFHwG3bg
+      value: Bearer {{token}}
+      disabled: true
   body:
     type: json
     data: |-
       {
-        "title": "hello user",
-        "description": "lets start",
+        "title": "hello userw",
+        "description": "lets starwwt",
         "isComplete": false
       }
-  auth: inherit
+  auth:
+    type: bearer
+    token: "{{token}}"
+
+runtime:
+  variables:
+    - name: token
+      value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIzMGYwNDg3LWY5YjEtNGJhNi1iMDc2LWJmZGM2YWIwM2I1YyIsInVzZXJuYW1lIjoic3MiLCJpYXQiOjE3ODg0NjQ3OTAsImV4cCI6MTc4ODU1MTE5MH0.AYT3jPQGDMqYkqVMmLEeAp3WyII8_6xAZcRaHhNGwgA
 
 settings:
   encodeUrl: true

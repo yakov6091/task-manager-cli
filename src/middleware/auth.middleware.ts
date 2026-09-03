@@ -48,6 +48,7 @@ export const authenticateToken = (
         // Pass control to the next function (the task controller!)
         next()
     } catch (error) {
+        console.error("JWT Verification Failed:", error);
         res.status(403).json({ message: 'Invalid or expired token' });
     }
 }

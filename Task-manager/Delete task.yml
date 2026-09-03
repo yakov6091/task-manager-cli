@@ -1,11 +1,19 @@
 info:
   name: Delete task
   type: http
+  seq: 1
 
 http:
   method: DELETE
-  url: http://localhost:4000/tasks/delete/2
-  auth: inherit
+  url: http://localhost:4000/tasks/delete/7491931d-9480-4d08-a0f4-cd82cf4b27d1
+  auth:
+    type: bearer
+    token: "{{toekn}}"
+
+runtime:
+  variables:
+    - name: toekn
+      value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIzMGYwNDg3LWY5YjEtNGJhNi1iMDc2LWJmZGM2YWIwM2I1YyIsInVzZXJuYW1lIjoic3MiLCJpYXQiOjE3ODg0NjQ3OTAsImV4cCI6MTc4ODU1MTE5MH0.AYT3jPQGDMqYkqVMmLEeAp3WyII8_6xAZcRaHhNGwgA
 
 settings:
   encodeUrl: true
