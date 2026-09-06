@@ -5,7 +5,11 @@
         "target": "es2025",
         "sourceMap": true,
         "outDir": "./dist",
-        "rootDir": "./src"
+        "rootDir": "./src",
+        "types": [
+            "jest",
+            "node"
+        ],
     },
     "include": [
         "src/**/*"
