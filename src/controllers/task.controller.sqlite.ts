@@ -48,19 +48,34 @@ export const updateTask = (req: AuthenticationRequest, res: Response) => {
     const { title, description, isComplete } = req.body;
     const userId = req.user?.id;
 
+    // 1. Fetch current task to preserve fields that are not sent in PATCH body
+    const existingTask = db.prepare('SELECT * FROM tasks WHERE id = ? AND userId = ?').get(id, userId) as any;
+
+    if (!existingTask) {
+        return res.status(404).json({ message: 'Task not found or unauthorized' });
+    }
+
+    // 2. Safely fallback to existing values if a field was not provided in req.body
+    const updatedTitle = title !== undefined ? title.trim() : existingTask.title;
+    const updatedDescription = description !== undefined ? description?.trim() || '' : existingTask.description;
+    const updatedIsComplete = isComplete !== undefined ? (isComplete ? 1 : 0) : existingTask.isComplete;
+
+    // 3. Execute update query
     const stmt = db.prepare(`
         UPDATE tasks 
         SET title = ?, description = ?, isComplete = ?
         WHERE id = ? AND userId = ?
     `);
 
-    const result = stmt.run(title.trim(), description?.trim() || '', isComplete ? 1 : 0, id, userId);
+    stmt.run(updatedTitle, updatedDescription, updatedIsComplete, id, userId);
 
-    if (result.changes === 0) {
-        return res.status(404).json({ message: 'Task not found or unauthorized' });
-    }
-
-    res.status(200).json({ id, title, description, isComplete, userId });
+    res.status(200).json({
+        id,
+        title: updatedTitle,
+        description: updatedDescription,
+        isComplete: Boolean(updatedIsComplete),
+        userId
+    });
 };
 
 export const deleteTask = (req: AuthenticationRequest, res: Response) => {
