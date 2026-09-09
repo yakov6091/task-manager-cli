@@ -1,9 +1,7 @@
 import { type Task } from "../TaskManager";
 
-// const URL = 'http://localhost:4000/tasks';
-const URL = 'https://task-manager-api-kw35.onrender.com/auth';
+const TASKS_URL = 'https://task-manager-api-kw35.onrender.com/tasks';
 
-// Helper function to dynamically add headers with the JWT token
 const getHeaders = () => {
     const token = localStorage.getItem('token');
     return {
@@ -12,20 +10,20 @@ const getHeaders = () => {
     };
 };
 
-// object way
 export const taskService = {
     // GET tasks
     query: async (): Promise<Task[]> => {
-        const response = await fetch(URL, {
+        const response = await fetch(TASKS_URL, {
             headers: getHeaders(),
         });
 
         if (!response.ok) throw new Error('Failed to fetch tasks');
         return response.json();
     },
+
     // Create task
     create: async (taskData: Omit<Task, 'id' | 'createdAt'>): Promise<Task> => {
-        const response = await fetch(`${URL}/add`, {
+        const response = await fetch(`${TASKS_URL}/add`, {
             method: 'POST',
             headers: getHeaders(),
             body: JSON.stringify(taskData),
@@ -33,12 +31,13 @@ export const taskService = {
         if (!response.ok) throw new Error('Failed to create task');
         return response.json();
     },
+
     // Patch task
     patch: async (taskId: number, fieldsToUpdate: Partial<Task>): Promise<Task> => {
-        const response = await fetch(`${URL}/patch/${taskId}`, {
+        const response = await fetch(`${TASKS_URL}/patch/${taskId}`, {
             method: 'PATCH',
             headers: getHeaders(),
-            body: JSON.stringify(fieldsToUpdate)// pass the partial changes here!
+            body: JSON.stringify(fieldsToUpdate)
         });
         if (!response.ok) throw new Error('Failed to update task');
         return response.json();
@@ -46,7 +45,7 @@ export const taskService = {
 
     // DELETE task
     remove: async (taskId: number): Promise<void> => {
-        const response = await fetch(`${URL}/delete/${taskId}`, {
+        const response = await fetch(`${TASKS_URL}/delete/${taskId}`, {
             method: 'DELETE',
             headers: getHeaders(),
         });
