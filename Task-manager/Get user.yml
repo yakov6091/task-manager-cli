@@ -1,0 +1,17 @@
+info:
+  name: Get user
+  type: http
+
+http:
+  method: GET
+  url: http://localhost:4000/auth/me
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJuYW1lIjoic3MiLCJpYXQiOjE3ODU2OTc0MDUsImV4cCI6MTc4NTcwMTAwNX0.FLkdjO98tNgIxoA32NRk0q4XQVxTJd0GG57Mrp3-C6Y
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

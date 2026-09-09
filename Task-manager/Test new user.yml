@@ -1,0 +1,27 @@
+info:
+  name: Test new user
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:4000/auth/register
+  body:
+    type: json
+    data: |-
+      {
+        "username":"ss1",
+        "password":"ss1"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: bru.setEnvVar("token", res.body.token);
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
