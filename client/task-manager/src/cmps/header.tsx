@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { authService } from "../services/auth.service";
 import { AuthModal } from "./AuthModal";
 interface UserCredentials {
     username: string,
