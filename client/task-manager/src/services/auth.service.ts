@@ -1,4 +1,5 @@
-const URL = 'http://localhost:4000/auth';
+// const URL = 'http://localhost:4000/auth';
+const URL = 'https://task-manager-api-kw35.onrender.com/auth';
 
 type Credentials = {
     username: string,
