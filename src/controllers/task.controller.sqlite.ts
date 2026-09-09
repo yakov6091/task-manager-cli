@@ -34,7 +34,7 @@ export const createTask = (req: AuthenticationRequest, res: Response) => {
     `);
     stmt.run(id, title.trim(), description?.trim() || '', 0, userId);
 
-    res.status(200).json({
+    res.status(201).json({
         id,
         title: title.trim(),
         description: description?.trim() || '',
@@ -57,7 +57,7 @@ export const updateTask = (req: AuthenticationRequest, res: Response) => {
     const result = stmt.run(title.trim(), description?.trim() || '', isComplete ? 1 : 0, id, userId);
 
     if (result.changes === 0) {
-        return res.status(400).json({ message: 'Task not found or unauthorized' });
+        return res.status(404).json({ message: 'Task not found or unauthorized' });
     }
 
     res.status(200).json({ id, title, description, isComplete, userId });
@@ -74,5 +74,5 @@ export const deleteTask = (req: AuthenticationRequest, res: Response) => {
         return res.status(404).json({ message: 'Task not found or unauthorized' });
     }
 
-    res.json({ message: 'Task deleted' });
+    res.status(200).json({ message: 'Task deleted' });
 };
