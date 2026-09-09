@@ -1,5 +1,4 @@
-// const URL = 'http://localhost:4000/auth';
-const URL = 'https://task-manager-api-kw35.onrender.com/auth';
+const AUTH_URL = 'https://task-manager-api-kw35.onrender.com/auth';
 
 type Credentials = {
     username: string,
@@ -9,7 +8,7 @@ type Credentials = {
 export const authService = {
     // Register User
     register: async (credentials: Credentials) => {
-        const response = await fetch(`${URL}/register`, {
+        const response = await fetch(`${AUTH_URL}/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials)
@@ -22,9 +21,10 @@ export const authService = {
 
         return response.json();
     },
+
     // Login user and save token
     login: async (credentials: Credentials) => {
-        const response = await fetch(`${URL}/login`, {
+        const response = await fetch(`${AUTH_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(credentials)
@@ -37,32 +37,33 @@ export const authService = {
 
         const data = await response.json();
 
-        // Save the JWT token received from backend into localStorage
         if (data.token) {
             localStorage.setItem('token', data.token);
         }
-        return data // Returns user info / token
+        return data;
     },
+
     // Get current logged-in user profile (/auth/me)
     getMe: async () => {
         const token = localStorage.getItem('token');
         if (!token) return null;
 
-        const response = await fetch(`${URL}/me`, {
+        const response = await fetch(`${AUTH_URL}/me`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`
             }
         });
 
-        if (response.ok) {
-            // Token might be expired or invalid
+        // Fixed: Clear token only if request fails (!response.ok)
+        if (!response.ok) {
             localStorage.removeItem('token');
             return null;
         }
 
         return response.json();
     },
+
     // Logout user
     logout: () => {
         localStorage.removeItem('token');
