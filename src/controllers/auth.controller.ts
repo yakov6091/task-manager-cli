@@ -11,14 +11,14 @@ const JWT_SECRET = "super_secret_temporary_key_12345";
 
 export const getMe = async (req: AuthenticationRequest, res: Response): Promise<void> => {
     try {
-        const userId = req.user?.userId;
+        const id = req.user?.id;
 
         // Read db.json
         const fileContent = fs.readFileSync(dbPath, 'utf-8');
         const db = JSON.parse(fileContent);
 
         // Find the user inside db.users
-        const user = db.users.find((user: any) => user.id === userId);
+        const user = db.users.find((user: any) => user.id === id);
 
         if (!user) {
             res.status(404).json({ message: 'User not found.' });
@@ -120,7 +120,7 @@ export const loginUser = async (req: Request, res: Response) => {
         // Generate the JWT (The VIP wristband) 
         // We put the user's ID inside the payload so we know who they are later
         const token = jwt.sign(
-            { userId: user.id, username: user.username },
+            { id: user.id, username: user.username },
             JWT_SECRET,
             { expiresIn: "1h" } // Wristband expires in 1 hour
         );
